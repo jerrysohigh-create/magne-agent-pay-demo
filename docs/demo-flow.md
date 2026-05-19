@@ -14,9 +14,9 @@ A step-by-step guide for demonstrating the x402-compatible AI task payment flow 
 | Parameter | Value |
 |-----------|-------|
 | Network Name | M Hash L2 Testnet |
-| RPC URL | `https://testnet-rpc.mhash.ai` |
+| RPC URL | `https://l2-rpc.testnet.magicalhash.com` |
 | Chain ID | `20250827` |
-| Explorer | `https://testnet-explorer.mhash.ai` |
+| Explorer | `https://l2-explorer.testnet.magicalhash.com` |
 
 ## Demo Flow
 
@@ -24,7 +24,7 @@ A step-by-step guide for demonstrating the x402-compatible AI task payment flow 
 
 1. Open `frontend/index.html` in a browser
 2. Configure network settings:
-   - RPC URL: `https://testnet-rpc.mhash.ai`
+   - RPC URL: `https://l2-rpc.testnet.magicalhash.com`
    - Chain ID: `20250827`
    - Contract addresses (after deployment)
 
@@ -208,7 +208,7 @@ Creates an on-chain AI task receipt.
   "status": "success",
   "receiptId": "0x...",
   "receiptTxHash": "0x...",
-  "explorerUrl": "https://testnet-explorer.mhash.ai/tx/0x...",
+  "explorerUrl": "https://l2-explorer.testnet.magicalhash.com/tx/0x...",
   "taskId": "task_...",
   "amount": "0.01 mMHA",
   "timestamp": 1234567890
