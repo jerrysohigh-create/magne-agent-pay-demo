@@ -192,6 +192,7 @@ When presenting to exchanges or investors, always include:
 - "Not production-ready"
 - "No guarantees on timeline or features"
 - "For developer evaluation only"
+- "This is not a production payment integration. It is a testnet-stage developer demonstration designed for technical review, architecture validation, and ecosystem discussion."
 
 ❌ **DO NOT SAY:**
 - "MHA will appreciate"
