@@ -21,8 +21,12 @@ contract MockMHA {
 
     constructor() {
         _totalSupply = INITIAL_SUPPLY;
-        _balances[msg.sender] = INITIAL_SUPPLY;
-        emit Transfer(address(0), msg.sender, INITIAL_SUPPLY);
+        // 80% to deployer, 20% reserved for faucet
+        uint256 faucetAllocation = INITIAL_SUPPLY * 20 / 100;
+        _balances[msg.sender] = INITIAL_SUPPLY - faucetAllocation;
+        _balances[address(this)] = faucetAllocation;
+        emit Transfer(address(0), msg.sender, INITIAL_SUPPLY - faucetAllocation);
+        emit Transfer(address(0), address(this), faucetAllocation);
     }
 
     function totalSupply() public view returns (uint256) {
