@@ -9,7 +9,7 @@ module.exports = {
       chainId: 31337
     },
     mhashL2Testnet: {
-      url: process.env.M_HASH_L2_RPC || "https://testnet-rpc.mhash.ai",
+      url: process.env.M_HASH_L2_RPC || "https://l2-rpc.testnet.magicalhash.com",
       chainId: parseInt(process.env.CHAIN_ID || "20250827"),
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       gasPrice: "auto"
