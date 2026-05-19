@@ -23,7 +23,7 @@ app.get('/health', (req, res) => {
 // Routes
 app.use('/agent', require('./paidApi').router);
 app.use('/paid-api', require('./paidApi').router);
-app.use('/facilitator', require('./facilitator').router);
+app.use('/facilitator', require('./facilitator'));
 
 app.listen(PORT, () => {
   console.log(`MAGNE Agent Pay Demo Backend running on port ${PORT}`);
