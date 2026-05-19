@@ -7,7 +7,7 @@ const router = express.Router();
 const MOCK_MHA = process.env.MOCK_MHA_ADDRESS || '0x0000000000000000000000000000000000000000';
 const AI_TASK_RECEIPT = process.env.AI_TASK_RECEIPT_ADDRESS || '0x0000000000000000000000000000000000000000';
 const CHAIN_ID = parseInt(process.env.CHAIN_ID || '20250827');
-const RPC_URL = process.env.M_HASH_L2_RPC || 'https://testnet-rpc.mhash.ai';
+const RPC_URL = process.env.M_HASH_L2_RPC || 'https://l2-rpc.testnet.magicalhash.com';
 const FACILITATOR_ADDRESS = process.env.FACILITATOR_ADDRESS || '0x0000000000000000000000000000000000000000';
 
 // Payment amount in mMHA (for demo)
