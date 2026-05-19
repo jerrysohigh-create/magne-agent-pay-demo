@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGNE Agent Pay Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔮 MAGNE Agent Pay</h1>
+      <p class="subtitle">x402-Compatible AI Task Payment Demo on M Hash L2</p>
+      <p class="badge">V0.1 Testnet Demo</p>
+    </header>
+
+    <section class="config-panel">
+      <h2>⚙️ Network Configuration</h2>
+      <div class="config-grid">
+        <div class="config-item">
+          <label>RPC URL</label>
+          <input type="text" id="rpcUrl" value="https://testnet-rpc.mhash.ai" placeholder="M Hash L2 RPC">
+        </div>
+        <div class="config-item">
+          <label>Chain ID</label>
+          <input type="number" id="chainId" value="20250827" placeholder="Chain ID">
+        </div>
+        <div class="config-item">
+          <label>MockMHA Address</label>
+          <input type="text" id="mockMHA" placeholder="0x...">
+        </div>
+        <div class="config-item">
+          <label>AITaskReceipt Address</label>
+          <input type="text" id="aiTaskReceipt" placeholder="0x...">
+        </div>
+      </div>
+      <button id="connectWallet" class="btn btn-primary">🔗 Connect Wallet</button>
+    </section>
+
+    <section class="demo-panel">
+      <h2>📋 Demo Flow</h2>
+      <div class="steps-container">
+        <!-- Step 1: AI Agent Task -->
+        <div class="step" id="step1">
+          <div class="step-header">
+            <span class="step-number">1</span>
+            <span class="step-title">AI Agent Task</span>
+            <span class="step-status" id="step1Status"></span>
+          </div>
+          <div class="step-content">
+            <select id="serviceType">
+              <option value="text-generation">Text Generation</option>
+              <option value="image-analysis">Image Analysis</option>
+              <option value="data-processing">Data Processing</option>
+              <option value="code-generation">Code Generation</option>
+            </select>
+            <input type="text" id="taskPrompt" placeholder="Enter task description...">
+            <button id="createTask" class="btn btn-secondary">Create Task</button>
+          </div>
+          <div class="step-result" id="step1Result"></div>
+        </div>
+
+        <!-- Step 2: 402 Payment Required -->
+        <div class="step" id="step2">
+          <div class="step-header">
+            <span class="step-number">2</span>
+            <span class="step-title">402 Payment Required</span>
+            <span class="step-status" id="step2Status"></span>
+          </div>
+          <div class="step-content">
+            <div class="payment-info" id="paymentInfo">
+              <p>Payment details will appear here after task creation</p>
+            </div>
+            <button id="initiatePayment" class="btn btn-secondary" disabled>Initiate Payment</button>
+          </div>
+          <div class="step-result" id="step2Result"></div>
+        </div>
+
+        <!-- Step 3: Payment Settlement -->
+        <div class="step" id="step3">
+          <div class="step-header">
+            <span class="step-number">3</span>
+            <span class="step-title">Payment Settlement</span>
+            <span class="step-status" id="step3Status"></span>
+          </div>
+          <div class="step-content">
+            <input type="text" id="txHash" placeholder="Enter transaction hash after payment...">
+            <button id="verifyPayment" class="btn btn-secondary" disabled>Verify Payment</button>
+          </div>
+          <div class="step-result" id="step3Result"></div>
+        </div>
+
+        <!-- Step 4: AI Task Receipt -->
+        <div class="step" id="step4">
+          <div class="step-header">
+            <span class="step-number">4</span>
+            <span class="step-title">AI Task Receipt</span>
+            <span class="step-status" id="step4Status"></span>
+          </div>
+          <div class="step-content">
+            <button id="generateReceipt" class="btn btn-secondary" disabled>Generate Receipt</button>
+          </div>
+          <div class="step-result" id="step4Result"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logs-panel">
+      <h2>📜 Event Log</h2>
+      <div id="eventLog" class="event-log"></div>
+    </section>
+
+    <footer>
+      <p class="disclaimer">
+        ⚠️ <strong>Testnet Demo Only</strong> — This is a developer demonstration for testnet purposes. 
+        Not for production use. Subject to technical validation.
+      </p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
