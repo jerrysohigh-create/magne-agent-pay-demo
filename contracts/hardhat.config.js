@@ -1,4 +1,4 @@
-require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-ethers");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -12,18 +12,11 @@ module.exports = {
       url: process.env.M_HASH_L2_RPC || "https://testnet-rpc.mhash.ai",
       chainId: parseInt(process.env.CHAIN_ID || "20250827"),
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      gasPrice: "auto",
-      gasMultiplier: 1.2
+      gasPrice: "auto"
     }
   },
-  etherscan: {
-    apiKey: {
-      mhashL2Testnet: "testnet" // No API key needed for testnet verification
-    },
-    customChains: []
-  },
   paths: {
-    sources: "./",
+    sources: "./src",
     artifacts: "./artifacts",
     cache: "./cache"
   }
