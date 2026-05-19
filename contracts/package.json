@@ -6,11 +6,10 @@
     "compile": "hardhat compile",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "deploy:testnet": "hardhat run scripts/deploy.js --network mhashL2Testnet",
-    "verify": "hardhat verify --network mhashL2Testnet",
     "test": "hardhat test"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "hardhat": "^2.19.0"
   }
 }
