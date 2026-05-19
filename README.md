@@ -91,7 +91,7 @@ magne-agent-pay-demo/
 cd contracts
 npm install
 export PRIVATE_KEY=0x_your_private_key
-export M_HASH_L2_RPC=https://testnet-rpc.mhash.ai
+export M_HASH_L2_RPC=https://l2-rpc.testnet.magicalhash.com
 export CHAIN_ID=20250827
 npx hardhat run scripts/deploy.js --network mhashL2Testnet
 ```
@@ -129,7 +129,7 @@ npx serve frontend
 ### 4. Configure Frontend UI
 
 In the frontend UI, set:
-- RPC URL: `https://testnet-rpc.mhash.ai`
+- RPC URL: `https://l2-rpc.testnet.magicalhash.com`
 - Chain ID: `20250827`
 - MockMHA Address: `<MOCK_MHA_ADDRESS from deployment>`
 - AITaskReceipt Address: `<AI_TASK_RECEIPT_ADDRESS from deployment>`
@@ -226,8 +226,8 @@ Emits `AITaskReceiptCreated(receiptId, taskId, user, provider, agent, serviceTyp
 |-----------|-------|
 | Network Name | M Hash L2 Testnet |
 | Chain ID | `20250827` (verify with official network config) |
-| RPC URL | `https://testnet-rpc.mhash.ai` |
-| Block Explorer | `https://testnet-explorer.mhash.ai` |
+| RPC URL | `https://l2-rpc.testnet.magicalhash.com` |
+| Block Explorer | `https://l2-explorer.testnet.magicalhash.com` |
 | Target Block Time | ~400ms |
 | Target Gas Fee | <$0.0025 |
 
