@@ -48,7 +48,7 @@ class MAGNEAgentPayDemo {
       }
 
       this.address = accounts[0];
-      this.provider = new ethers.providers.Web3Provider(window.ethereum);
+      this.provider = new ethers.BrowserProvider(window.ethereum);
       this.signer = this.provider.getSigner();
 
       // Get network info
