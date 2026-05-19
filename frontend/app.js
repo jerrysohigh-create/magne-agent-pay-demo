@@ -49,7 +49,7 @@ class MAGNEAgentPayDemo {
 
       this.address = accounts[0];
       this.provider = new ethers.BrowserProvider(window.ethereum);
-      this.signer = this.provider.getSigner();
+      this.signer = await this.provider.getSigner();
 
       // Get network info
       const network = await this.provider.getNetwork();
@@ -203,6 +203,7 @@ class MAGNEAgentPayDemo {
         tokenAddress,
         [
           'function transfer(address to, uint256 amount) returns (bool)',
+          'function balanceOf(address owner) view returns (uint256)',
           'function decimals() view returns (uint8)',
           'function symbol() view returns (string)'
         ],
