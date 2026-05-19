@@ -12,9 +12,9 @@ Instructions for deploying the MAGNE Agent Pay demo contracts to M Hash L2 Testn
 2. **Network Details**
    ```
    Network Name: M Hash L2 Testnet
-   RPC URL: https://testnet-rpc.mhash.ai
+   RPC URL: https://l2-rpc.testnet.magicalhash.com
    Chain ID: 20250827
-   Explorer: https://testnet-explorer.mhash.ai
+   Explorer: https://l2-explorer.testnet.magicalhash.com
    Symbol: ETH
    ```
 
@@ -45,7 +45,7 @@ module.exports = {
   solidity: "0.8.20",
   networks: {
     mhashL2Testnet: {
-      url: "https://testnet-rpc.mhash.ai",
+      url: "https://l2-rpc.testnet.magicalhash.com",
       chainId: 20250827,
       accounts: [PRIVATE_KEY]
     }
@@ -129,7 +129,7 @@ cp .env.example .env
 
 Edit `.env`:
 ```env
-M_HASH_L2_RPC=https://testnet-rpc.mhash.ai
+M_HASH_L2_RPC=https://l2-rpc.testnet.magicalhash.com
 CHAIN_ID=20250827
 MOCK_MHA_ADDRESS=0x... (from deployment)
 AI_TASK_RECEIPT_ADDRESS=0x... (from deployment)
@@ -140,7 +140,7 @@ FACILITATOR_ADDRESS=0x... (your wallet address)
 ### 2. Update Frontend Configuration
 
 In `frontend/index.html`, update the default values or use the UI to set:
-- RPC URL: `https://testnet-rpc.mhash.ai`
+- RPC URL: `https://l2-rpc.testnet.magicalhash.com`
 - Chain ID: `20250827`
 - MockMHA Address: `0x...`
 - AITaskReceipt Address: `0x...`
@@ -160,7 +160,7 @@ await mockMHA.faucet(facilitatorAddress, ethers.utils.parseEther("100"));
 
 ### 1. Verify Contract on Explorer
 
-1. Go to `https://testnet-explorer.mhash.ai`
+1. Go to `https://l2-explorer.testnet.magicalhash.com`
 2. Search for your contract addresses
 3. Verify:
    - Contract creation transaction exists
