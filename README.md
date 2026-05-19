@@ -259,7 +259,7 @@ Emits `AITaskReceiptCreated(receiptId, taskId, user, provider, agent, serviceTyp
 | Smart Contracts (compile) | ⏳ Pending public verification |
 | Smart Contracts (deploy) | ⏳ Pending |
 | Backend API | ✅ Skeleton complete |
-| Frontend Demo | ⏳ Pending valid HTML + ethers v6 fix |
+| Frontend Demo | ⏳ Pending browser runtime verification |
 | End-to-end verification | ⏳ Pending |
 | Mainnet Deployment | ⏳ Planned |
 | Production Ready | ❌ Not Ready |
