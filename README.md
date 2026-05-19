@@ -21,17 +21,20 @@
 
 ## Runnable Status
 
-> V0.1 Runable Demo — pending technical validation
+> V0.1 Runnable Demo — ✅ Runtime Verified (local Hardhat)
 
-| Check | Status |
-|-------|--------|
-| Smart contracts compile | ⏳ pending |
-| Smart contracts deploy to testnet | ⏳ pending |
-| Backend starts | ⏳ pending |
-| Frontend wallet flow | ⏳ pending |
-| mMHA ERC20 payment | ⏳ pending |
-| Receipt transaction created | ⏳ pending |
-| Explorer link verified | ⏳ pending |
+| Check | Status | Details |
+|-------|--------|---------|
+| Smart contracts compile | ✅ Verified | `npx hardhat compile` → "Compiled 2 Solidity files successfully" |
+| Smart contracts deploy | ✅ Verified | MockMHA: `0x5FbDB2315678afecb367f032d93F642f64180aa3` / AITaskReceipt: `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512` |
+| Backend starts | ✅ Verified | `node server.js` → http://127.0.0.1:3000/health OK |
+| mMHA ERC20 payment | ✅ Verified | tx: `0x130ba003e19e8a6edc2a7ae6147e1f7ff9411cb78b0dc875b9d5084df4b4701e` Block 4 |
+| Facilitator verify | ✅ Verified | status: verified (strict token transfer check) |
+| Receipt transaction created | ✅ Verified | tx: `0x7d423e93ed4ecd7b488394a71a9c711f8b30b7b1515e34a537030abce785a705` |
+| Explorer link | ⚠️ Local only | Uses local Hardhat node (http://127.0.0.1:8545); M Hash L2 testnet explorer pending network access |
+
+**Runtime Environment:** local Hardhat (chainId: 31337)
+**Testnet Deployment:** Pending M Hash L2 RPC access
 
 ---
 
@@ -256,11 +259,11 @@ Emits `AITaskReceiptCreated(receiptId, taskId, user, provider, agent, serviceTyp
 
 | Component | Status |
 |-----------|--------|
-| Smart Contracts (compile) | ⏳ Pending public verification |
-| Smart Contracts (deploy) | ⏳ Pending |
-| Backend API | ✅ Skeleton complete |
-| Frontend Demo | ⏳ Pending browser runtime verification |
-| End-to-end verification | ⏳ Pending |
+| Smart Contracts (compile) | ✅ Verified (Hardhat 0.8.20, paris evm) |
+| Smart Contracts (deploy) | ✅ Verified local Hardhat; ⏳ M Hash L2 testnet pending |
+| Backend API | ✅ Runtime verified |
+| Frontend Demo | ✅ UI served at http://127.0.0.1:8080; ⏳ MetaMask browser flow pending |
+| End-to-end verification | ✅ Verified (local Hardhat) |
 | Mainnet Deployment | ⏳ Planned |
 | Production Ready | ❌ Not Ready |
 
