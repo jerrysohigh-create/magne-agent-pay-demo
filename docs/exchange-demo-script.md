@@ -65,7 +65,7 @@ The key innovation here is the **x402-compatible interface** — a standard HTTP
 
 "I've connected my MetaMask to M Hash L2 Testnet. Chain ID 20250827.
 
-Notice the RPC endpoint: testnet-rpc.mhash.ai — this is the testnet infrastructure supporting our demo."
+Notice the RPC endpoint: l2-rpc.testnet.magicalhash.com — this is the testnet infrastructure supporting our demo."
 
 ### Step 2: Create Task
 
