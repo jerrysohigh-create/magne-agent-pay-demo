@@ -13,9 +13,25 @@
 - ❌ Not production-ready
 - ❌ Do not promise any returns
 - ❌ Do not imply MHA token appreciation
-- ❌ Not suitable for exchange integration at this stage
+- ❌ This is not a production payment integration. It is a testnet-stage developer demonstration designed for technical review, architecture validation, and ecosystem discussion.
 
 **Planned / Designed to support / Subject to technical validation**
+
+---
+
+## Runnable Status
+
+> V0.1 Runable Demo — pending technical validation
+
+| Check | Status |
+|-------|--------|
+| Smart contracts compile | ⏳ pending |
+| Smart contracts deploy to testnet | ⏳ pending |
+| Backend starts | ⏳ pending |
+| Frontend wallet flow | ⏳ pending |
+| mMHA ERC20 payment | ⏳ pending |
+| Receipt transaction created | ⏳ pending |
+| Explorer link verified | ⏳ pending |
 
 ---
 
@@ -23,13 +39,15 @@
 
 MAGNE Agent Pay V0.1 Demo showcases an x402-compatible payment flow for AI agent task settlements on M Hash L2 Testnet.
 
+**Key architectural point**: This demo operates as a standard EVM contract layer on top of M Hash L2 — no modifications to M Hash L2 core code or OP Stack deployment logic.
+
 ### Key Features
 
 - 🔗 **x402-Compatible** — HTTP 402 payment requests with structured metadata
-- 🤖 **AI Task Receipts** — On-chain recording of AI task payments
+- 🤖 **AI Task Receipts** — On-chain recording via `AITaskReceipt.createReceipt()`
 - ⚡ **M Hash L2** — High-performance EVM layer 2 (400ms blocks, <$0.0025 fees target)
-- 💳 **EVM Wallets** — MetaMask and compatible wallets
-- 📜 **Full Audit Trail** — Verifiable receipts on-chain
+- 💳 **ERC20 Payment** — Uses MockMHA (mMHA) token, not native ETH
+- 📜 **Full Audit Trail** — Verifiable receipts on-chain with strict transfer verification
 
 ---
 
@@ -38,21 +56,25 @@ MAGNE Agent Pay V0.1 Demo showcases an x402-compatible payment flow for AI agent
 ```
 magne-agent-pay-demo/
 ├── contracts/
-│   ├── MockMHA.sol          # ERC20-like mock token (testnet only)
-│   └── AITaskReceipt.sol    # AI task receipt contract
+│   ├── package.json           # Hardhat + compile scripts
+│   ├── hardhat.config.js      # Network config
+│   ├── scripts/deploy.js      # Deployment script
+│   ├── MockMHA.sol            # ERC20 mock token (mMHA)
+│   └── AITaskReceipt.sol      # AI task receipt contract
 ├── backend/
-│   ├── server.js            # Express.js server
-│   ├── paidApi.js            # x402-compatible payment API
-│   ├── facilitator.js        # Payment verification & receipt generation
-│   └── .env.example          # Environment template
+│   ├── package.json
+│   ├── server.js              # Express.js server
+│   ├── paidApi.js             # x402-compatible payment API
+│   ├── facilitator.js          # Strict token transfer verification + receipt
+│   └── .env.example
 ├── frontend/
-│   ├── index.html            # Demo UI
-│   ├── app.js                # Frontend logic
-│   └── style.css             # Dark tech theme
+│   ├── index.html             # Demo UI (4-step flow)
+│   ├── app.js                 # ERC20 payment via MockMHA.transfer()
+│   └── style.css              # Dark tech theme
 └── docs/
-    ├── architecture.md       # System architecture
-    ├── demo-flow.md          # Step-by-step demo guide
-    ├── mhash-l2-deployment.md # Contract deployment guide
+    ├── architecture.md         # System architecture
+    ├── demo-flow.md           # Step-by-step demo guide
+    ├── mhash-l2-deployment.md  # Contract deployment guide
     └── exchange-demo-script.md # External presentation script
 ```
 
@@ -60,44 +82,62 @@ magne-agent-pay-demo/
 
 ## Quick Start
 
-### 1. Setup Network
-
-Add M Hash L2 Testnet to MetaMask:
-```
-Network Name: M Hash L2 Testnet
-RPC URL: https://testnet-rpc.mhash.ai
-Chain ID: 20250827
-Explorer: https://testnet-explorer.mhash.ai
-Symbol: ETH
-```
-
-### 2. Deploy Contracts
-
-See [docs/mhash-l2-deployment.md](docs/mhash-l2-deployment.md) for detailed deployment instructions.
+### 1. Deploy Contracts
 
 ```bash
 cd contracts
 npm install
+export PRIVATE_KEY=0x_your_private_key
+export M_HASH_L2_RPC=https://testnet-rpc.mhash.ai
+export CHAIN_ID=20250827
 npx hardhat run scripts/deploy.js --network mhashL2Testnet
 ```
 
-### 3. Configure Backend
+Output:
+```
+MockMHA deployed to: 0x...
+AITaskReceipt deployed to: 0x...
+MOCK_MHA_ADDRESS=0x...
+AI_TASK_RECEIPT_ADDRESS=0x...
+```
+
+### 2. Configure and Start Backend
 
 ```bash
-cd backend
+cd ../backend
 cp .env.example .env
-# Edit .env with your deployed contract addresses
+# Edit .env with:
+#   MOCK_MHA_ADDRESS=<from deployment>
+#   AI_TASK_RECEIPT_ADDRESS=<from deployment>
+#   FACILITATOR_PRIVATE_KEY=<your private key>
+#   FACILITATOR_ADDRESS=<your wallet address>
 npm install
 npm start
 ```
 
-### 4. Open Frontend
-
-Simply open `frontend/index.html` in a browser, or serve it:
+### 3. Open Frontend
 
 ```bash
+# Either open frontend/index.html directly, or:
 npx serve frontend
+# Then visit http://localhost:3000
 ```
+
+### 4. Configure Frontend UI
+
+In the frontend UI, set:
+- RPC URL: `https://testnet-rpc.mhash.ai`
+- Chain ID: `20250827`
+- MockMHA Address: `<MOCK_MHA_ADDRESS from deployment>`
+- AITaskReceipt Address: `<AI_TASK_RECEIPT_ADDRESS from deployment>`
+
+### 5. Run Demo Flow
+
+1. **Connect Wallet** — Click "Connect Wallet" and approve MetaMask
+2. **Create Task** — Select service type, click "Create Task" → returns HTTP 402 with payment info
+3. **Initiate Payment** — Click "Initiate Payment" → MetaMask prompts for mMHA ERC20 transfer
+4. **Verify Payment** — Backend verifies strict: contract address + recipient + amount
+5. **Generate Receipt** — Backend calls `AITaskReceipt.createReceipt()` on-chain
 
 ---
 
@@ -106,13 +146,27 @@ npx serve frontend
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Step 1     │     │  Step 2     │     │  Step 3     │     │  Step 4     │
-│  AI Agent   │────▶│  402        │────▶│  Payment    │────▶│  AI Task    │
+│  AI Agent   │────▶│  HTTP 402   │────▶│  Payment    │────▶│  AI Task    │
 │  Task       │     │  Required   │     │  Settlement │     │  Receipt    │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
      │                   │                    │                    │
-  Create task        Pay with          Verify on-chain        Generate
-  (HTTP 402)        MetaMask             tx hash            on-chain receipt
+  POST /agent/task   402 with           MetaMask signs          On-chain
+  + payment info     mMHA ERC20          strict verify()       createReceipt()
 ```
+
+---
+
+## Payment Verification (Strict)
+
+The facilitator performs strict on-chain verification:
+
+1. ✅ Transaction receipt exists and status === 1
+2. ✅ Chain ID matches expected network
+3. ✅ Log address matches `MOCK_MHA_ADDRESS`
+4. ✅ Transfer event `to` address matches `expectedRecipient`
+5. ✅ Transfer event `value` >= `expectedAmount`
+
+If any check fails → `status: "failed"` with reason.
 
 ---
 
@@ -120,11 +174,11 @@ npx serve frontend
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/agent/task` | POST | Create AI task, returns 402 payment required |
+| `/agent/task` | POST | Create AI task → returns HTTP 402 with x402 payment metadata |
 | `/paid-api/wallet-risk` | GET | Check payment status for a task |
-| `/facilitator/verify` | POST | Verify payment transaction on-chain |
-| `/facilitator/receipt` | POST | Generate AI task receipt on-chain |
-| `/facilitator/status` | GET | Check facilitator service status |
+| `/facilitator/verify` | POST | **Strict** on-chain mMHA transfer verification |
+| `/facilitator/receipt` | POST | Call `AITaskReceipt.createReceipt()` on-chain |
+| `/facilitator/status` | GET | Check facilitator + network status |
 
 ---
 
@@ -136,8 +190,9 @@ ERC20-like mock token for testnet demonstrations.
 
 - Symbol: mMHA
 - Decimals: 18
-- Initial Supply: 1B tokens
-- Includes faucet function for testing
+- Initial Supply: 1B (80% deployer, 20% faucet)
+- Faucet function for distributing test tokens
+- **Payment**: User calls `transfer(recipient, amount)` — not native ETH
 
 ### AITaskReceipt
 
@@ -158,22 +213,22 @@ function createReceipt(
 ) external returns (bytes32 receiptId);
 ```
 
-Emits `AITaskReceiptCreated` event with full receipt data.
+Emits `AITaskReceiptCreated(receiptId, taskId, user, provider, agent, serviceType, amount, token, paymentTxHash, resultHash, metadataURI, timestamp)`.
 
 ---
 
-## Network Details
+## Network Configuration
 
 | Parameter | Value |
 |-----------|-------|
 | Network Name | M Hash L2 Testnet |
-| Chain ID | 20250827 |
-| RPC URL | https://testnet-rpc.mhash.ai |
-| Block Explorer | https://testnet-explorer.mhash.ai |
+| Chain ID | `20250827` (verify with official network config) |
+| RPC URL | `https://testnet-rpc.mhash.ai` |
+| Block Explorer | `https://testnet-explorer.mhash.ai` |
 | Target Block Time | ~400ms |
 | Target Gas Fee | <$0.0025 |
 
-**Note**: Network parameters are design targets for testnet. Subject to technical validation.
+> ⚠️ **Chain ID Note**: Demo is configured for `20250827`. Current Kurtosis config may use `2151908`. Always verify the active chainId before demonstrations.
 
 ---
 
@@ -183,6 +238,7 @@ Emits `AITaskReceiptCreated` event with full receipt data.
 - [Demo Flow](docs/demo-flow.md) — Step-by-step demonstration guide
 - [Deployment Guide](docs/mhash-l2-deployment.md) — Contract deployment instructions
 - [Exchange Demo Script](docs/exchange-demo-script.md) — External presentation script
+- [M-Hash-L2 Link](https://github.com/jerrysohigh-create/M-Hash-L2/blob/main/docs/agent-pay-demo.md) — Agent Pay Demo in M-Hash-L2 docs
 
 ---
 
@@ -192,7 +248,7 @@ Emits `AITaskReceiptCreated` event with full receipt data.
 - ✅ No investment promises
 - ✅ No token sale
 - ✅ Clear "subject to validation" language
-- ✅ Designed for developer evaluation
+- ✅ Designed for technical review and architecture validation
 
 ---
 
@@ -200,9 +256,11 @@ Emits `AITaskReceiptCreated` event with full receipt data.
 
 | Component | Status |
 |-----------|--------|
-| Smart Contracts | ✅ Testnet Demo |
-| Backend API | ✅ Testnet Demo |
-| Frontend Demo | ✅ Testnet Demo |
+| Smart Contracts (compile) | ✅ |
+| Smart Contracts (deploy) | ⏳ pending |
+| Backend API | ✅ |
+| Frontend Demo | ✅ |
+| End-to-end verification | ⏳ pending |
 | Mainnet Deployment | ⏳ Planned |
 | Production Ready | ❌ Not Ready |
 
