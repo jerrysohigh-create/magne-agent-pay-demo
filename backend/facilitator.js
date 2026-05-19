@@ -4,7 +4,7 @@ const { paidTasks } = require('./paidApi');
 
 const router = express.Router();
 
-const RPC_URL = process.env.M_HASH_L2_RPC || 'https://testnet-rpc.mhash.ai';
+const RPC_URL = process.env.M_HASH_L2_RPC || 'https://l2-rpc.testnet.magicalhash.com';
 const CHAIN_ID = parseInt(process.env.CHAIN_ID || '20250827');
 const FACILITATOR_PRIVATE_KEY = process.env.FACILITATOR_PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000000';
 const FACILITATOR_ADDRESS = process.env.FACILITATOR_ADDRESS || '0x0000000000000000000000000000000000000000';
@@ -236,7 +236,7 @@ router.post('/receipt', async (req, res) => {
       }
     }
 
-    const explorerBaseUrl = 'https://testnet-explorer.mhash.ai';
+    const explorerBaseUrl = 'https://l2-explorer.testnet.magicalhash.com';
     const txHash = receipt.hash;
 
     res.json({
