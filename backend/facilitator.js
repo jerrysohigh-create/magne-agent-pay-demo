@@ -86,29 +86,37 @@ router.post('/verify', async (req, res) => {
       });
     }
 
-    // Parse logs to verify token transfer
+    // Parse logs to verify token transfer - STRICT verification
     let paymentVerified = false;
     let actualAmount = '0';
-    let actualToken = MOCK_MHA_ADDRESS;
-    let actualRecipient = expectedRecipient || FACILITATOR_ADDRESS;
+    let actualToken = null;
+    let actualRecipient = null;
 
     // Simple transfer event signature
     const transferSig = ethers.id('Transfer(address,address,uint256)');
+    const expectedAmountNum = parseFloat(expectedAmount || '0');
+    const expectedRecipientLower = (expectedRecipient || FACILITATOR_ADDRESS).toLowerCase();
     
     for (const log of receipt.logs) {
+      // Must be from MockMHA contract
+      if (log.address.toLowerCase() !== MOCK_MHA_ADDRESS.toLowerCase()) {
+        continue;
+      }
+      
       if (log.topics[0] === transferSig) {
         // Parse Transfer event
-        const from = ethers.getAddress('0x' + log.topics[1].slice(26));
         const to = ethers.getAddress('0x' + log.topics[2].slice(26));
-        const value = ethers.formatEther(ethers.toBeHex(BigInt(log.data), 32));
+        const valueBigInt = BigInt(log.data);
+        const value = ethers.formatEther(valueBigInt);
 
-        // Check if this looks like our payment (to facilitator or any specified recipient)
-        const recipientMatch = !expectedRecipient || to.toLowerCase() === expectedRecipient.toLowerCase();
-        const amountMatch = !expectedAmount || parseFloat(value) >= parseFloat(expectedAmount);
+        // Strict checks: recipient and amount must match
+        const recipientMatch = to.toLowerCase() === expectedRecipientLower;
+        const amountMatch = parseFloat(value) >= expectedAmountNum;
 
         if (recipientMatch && amountMatch) {
           paymentVerified = true;
           actualAmount = value;
+          actualToken = log.address;
           actualRecipient = to;
           break;
         }
@@ -116,11 +124,13 @@ router.post('/verify', async (req, res) => {
     }
 
     if (!paymentVerified) {
-      // For demo purposes, we'll accept if the tx exists and succeeded
-      // In production, strict token verification would be required
-      paymentVerified = true;
-      actualAmount = expectedAmount || '0.01';
-      actualRecipient = expectedRecipient || FACILITATOR_ADDRESS;
+      return res.json({
+        status: 'failed',
+        reason: 'Required mMHA token transfer not found or payment mismatch. Must be: same contract, correct recipient, sufficient amount.',
+        txHash,
+        chainId: Number(network.chainId),
+        network: 'mhash-l2-testnet'
+      });
     }
 
     const verificationResult = {
