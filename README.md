@@ -256,11 +256,11 @@ Emits `AITaskReceiptCreated(receiptId, taskId, user, provider, agent, serviceTyp
 
 | Component | Status |
 |-----------|--------|
-| Smart Contracts (compile) | ✅ |
-| Smart Contracts (deploy) | ⏳ pending |
-| Backend API | ✅ |
-| Frontend Demo | ✅ |
-| End-to-end verification | ⏳ pending |
+| Smart Contracts (compile) | ⏳ Pending public verification |
+| Smart Contracts (deploy) | ⏳ Pending |
+| Backend API | ✅ Skeleton complete |
+| Frontend Demo | ⏳ Pending valid HTML + ethers v6 fix |
+| End-to-end verification | ⏳ Pending |
 | Mainnet Deployment | ⏳ Planned |
 | Production Ready | ❌ Not Ready |
 
