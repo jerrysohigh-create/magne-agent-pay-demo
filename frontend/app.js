@@ -189,14 +189,36 @@ class MAGNEAgentPayDemo {
 
     try {
       this.updateStepStatus('step2', 'pending', 'Waiting for wallet...');
-      this.log('info', 'Initiating payment...');
+      this.log('info', 'Initiating mMHA payment via ERC20 transfer...');
 
-      const tx = await this.signer.sendTransaction({
-        to: this.paymentInfo.recipient,
-        value: ethers.utils.parseEther(this.paymentInfo.amount),
-        data: '0x'
-      });
+      const tokenAddress = this.paymentInfo.paymentInstructions?.token;
+      const amount = this.paymentInfo.paymentInstructions?.amount;
 
+      if (!tokenAddress || !amount) {
+        throw new Error('Missing token or amount in payment instructions');
+      }
+
+      // ERC20 transfer - pay with mMHA, not native ETH
+      const tokenContract = new ethers.Contract(
+        tokenAddress,
+        [
+          'function transfer(address to, uint256 amount) returns (bool)',
+          'function decimals() view returns (uint8)',
+          'function symbol() view returns (string)'
+        ],
+        this.signer
+      );
+
+      // Check user balance first
+      const balance = await tokenContract.balanceOf(this.address);
+      const parseAmount = ethers.parseEther(amount.toString());
+      this.log('info', `Balance: ${ethers.formatEther(balance)} mMHA, Required: ${amount} mMHA`);
+
+      if (balance < parseAmount) {
+        throw new Error(`Insufficient mMHA balance. Have: ${ethers.formatEther(balance)}, Need: ${amount}`);
+      }
+
+      const tx = await tokenContract.transfer(this.paymentInfo.recipient, parseAmount);
       this.log('info', `Transaction sent: ${tx.hash}`);
       this.updateStepStatus('step2', 'pending', 'Awaiting confirmation...');
 
@@ -215,6 +237,8 @@ class MAGNEAgentPayDemo {
         resultEl.innerHTML = `
           <strong>Transaction Hash:</strong> ${tx.hash}<br>
           <strong>Block:</strong> ${receipt.blockNumber}<br>
+          <strong>Token:</strong> mMHA<br>
+          <strong>Amount:</strong> ${amount} mMHA<br>
           <strong>Status:</strong> Confirmed
         `;
         resultEl.classList.add('visible', 'success');
