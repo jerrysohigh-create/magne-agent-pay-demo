@@ -323,7 +323,7 @@ class MAGNEAgentPayDemo {
           providerAddress: this.paymentInfo?.facilitator,
           agentAddress: '0x0000000000000000000000000000000000000000',
           serviceType: document.getElementById('serviceType')?.value,
-          amount: this.paymentInfo?.amount ? ethers.utils.parseEther(this.paymentInfo.amount) : '10000000000000000',
+          amount: this.paymentInfo?.amount ? ethers.parseEther(this.paymentInfo.amount).toString() : '10000000000000000',
           tokenAddress: this.paymentInfo?.token,
           paymentTxHash: this.txHash,
           resultHash: ethers.keccak256(ethers.toUtf8Bytes('demo-result')),
